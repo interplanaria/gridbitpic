@@ -1,0 +1,433 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@_unwriter" />
+<meta name="twitter:title" content="bitpic" />
+<meta name="twitter:description" content="Your own avatar on bitcoin, forever." />
+<meta name="twitter:image" content="https://bitpic.network/bitpicpreview.png" />
+<meta property="og:url" content="https://bitpic.network/upload" />
+<meta property="og:type"   content="website" />
+<meta property="og:title" content="bitpic" />
+<meta property="og:description" content="Your own avatar on bitcoin, forever." />
+<meta property="og:image" content="https://bitpic.network/bitpicpreview.png" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.css" integrity="sha256-/n6IXDwJAYIh7aLVfRBdduQfdrab96XZR+YjG42V398=" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,900&display=swap" rel="stylesheet">
+
+<style>
+body {
+  text-align: center;
+  margin: 0;
+  /*
+  background: #20232a;
+  */
+  /*
+  background: #35459E;
+  */
+  /*
+  background: #003B74;
+  */
+  font-family: 'Roboto', sans-serif;
+}
+code {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+}
+.control input[type="file"] , .control button{
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  cursor: pointer;
+}
+.control div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*
+  border: 1px solid rgba(255,255,255,0.7);
+  */
+  background: rgba(0,0,0,0.8);
+  border-radius: 50px;
+  color: white;
+}
+.control {
+  cursor: pointer;
+  font-family: Menlo, monaco, Courier;
+  font-size: 12px;
+  display: block;
+  margin: 10px auto;
+  position: relative;
+  height: 50px;
+  width: 200px;
+}
+.hidden {
+  display: none !important;
+}
+#btns a {
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+}
+/*
+.cr-boundary {
+  background: white;
+}
+*/
+#resizer {
+  height: auto !important;
+}
+#btns {
+  align-items: center;
+}
+#btns > label {
+  /*
+  border: 1px solid black;
+  background: rgba(0,0,0,0.05);
+  */
+}
+header {
+/*
+  background: rgba(0,0,0,0.9);
+  */
+  color: rgba(0,0,0,0.8);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+header a {
+  text-decoration: none;
+  color: rgba(0,0,0,0.8);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+}
+#button .small {
+  color: white;
+  font-family: Menlo, monaco, Courier;
+  padding: 10px;
+  font-size: 12px;
+}
+#mb {
+  background: rgba(0,0,0,0.3);
+  margin: 10px;
+  border-radius: 50px;
+}
+#file-zone {
+  margin-top: 50px;
+}
+
+
+.lds-ring {
+  position: relative;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.subtitle {
+  font-size: 14px;
+  padding: 10px;
+  color: gray;
+}
+img.avatar {
+  width: 80px;
+  margin-bottom: 10px;
+}
+</style>
+<script type="text/javascript" src="https://unpkg.com/bsv@1.0.0/bsv.min.js"></script>
+<script src="https://www.moneybutton.com/moneybutton.js"></script>
+<script src='https://unpkg.com/datapay'></script>
+<script src='https://unpkg.com/databutton'></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.js'></script>
+<script src="https://bundle.run/buffer@5.4.3"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.0/dist/browser-image-compression.js"></script>
+<script>
+var resizer = (url, cb) => {
+  var el = document.querySelector("#resizer")
+  var resize = new Croppie(el, {
+    viewport: { width: 400, height: 400 },
+    boundary: { width: 600, height: 600 },
+    showZoomer: true,
+//          enableResize: true,
+//    enableOrientation: true,
+//    mouseWheelZoom: 'ctrl'
+  });
+  resize.bind({ url: url });
+  document.querySelector("#done").addEventListener("click", (e) => {
+    console.log("click")
+    resize.result({
+      type: 'blob',
+      format: "jpeg"
+    }).then(function(blob) {
+      console.log(blob)
+      cb(blob)
+    })
+    return false;
+  })
+}
+
+var convertBlob = (blob, type, callback) => {
+  return new Promise((resolve, reject) => {
+    let canvas = document.createElement('CANVAS')
+    canvas.style.display = 'none'
+    let ctx = canvas.getContext('2d')
+    console.log("wihe = ", canvas.width, canvas.height);
+
+
+    let image = new Image()
+    image.src = URL.createObjectURL(blob)
+    image.onload = function(){
+      canvas.width = image.width
+      canvas.height = image.height
+      ctx.drawImage(image, 0, 0)
+      let result = dataURItoBlob(canvas.toDataURL(type, 0.7))
+      if(callback) {
+        callback(result)
+      } else {
+        resolve(result)
+      }
+    }
+  })
+}
+var dataURItoBlob = (dataURI) => {
+  var byteString = atob(dataURI.split(',')[1]);
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+  var ab = new ArrayBuffer(byteString.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  var blob = new Blob([ab], {type: mimeString});
+  return blob;
+}
+var renderImage = (blob) => {
+  console.log('renderImage compressedFile instanceof Blob', blob instanceof Blob); // true
+  console.log(`compressedFile size ${blob.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+  var img = document.createElement("img");
+  var img = new Image();
+  img.onload = function(){
+    // Draw image to CANVAS
+    var canvas_e = document.querySelector("canvas#final")
+    canvas_e.classList.remove("hidden");
+    var ctx = canvas_e.getContext("2d");
+
+    ctx.drawImage(img, 0, 0);
+    console.log(img.width, img.height)
+
+    var MAX_WIDTH = 800;
+    var MAX_HEIGHT = 600;
+    var width = img.width;
+    var height = img.height;
+
+    if (width > height) {
+      if (width > MAX_WIDTH) {
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+      }
+    } else {
+      if (height > MAX_HEIGHT) {
+        width *= MAX_HEIGHT / height;
+        height = MAX_HEIGHT;
+      }
+    }
+    canvas_e.width = width;
+    canvas_e.height = height;
+    ctx.drawImage(img, 0, 0, width, height);
+
+
+  };
+  img.onerror = function(e){
+    console.log('Error during loading image:', e);
+  };
+  img.src = window.URL.createObjectURL(blob);
+}
+var buildTx = (blob) => {
+  var reader = new FileReader();
+  reader.addEventListener('load', function(event) {
+    var file = event.target.result
+    file = buffer.Buffer.from(file)
+
+    let hex = Array.prototype.map.call(file, x => ('00' + x.toString(16)).slice(-2)).join('');
+
+    let hash = bsv.crypto.Hash.sha256(buffer.Buffer.from(hex, 'hex')).toString('hex')
+
+    console.log("name = ", name)
+    console.log("file = ", file)
+    console.log("hex = ", hex)
+    console.log("hash = ", hash)
+
+    let s = bsv.Script.buildSafeDataOut([
+      "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut", // B://
+      file,
+      "image/jpeg",
+      "binary",
+      "|",
+      "18pAqbYqhzErT6Zk3a5dwxHtB9icv8jH2p", // Bitface
+      '#{paymail}',
+      '#{pubkey}',
+      '#{sig}'
+    ])
+
+    console.log("s = ", s)
+    console.log("asm = ", s.toASM())
+
+    moneyButton.render(document.querySelector("#mb"), {
+      label: 'sign',
+      outputs: [{
+        amount: '0',
+        currency: 'BSV',
+        script: s.toASM()
+      }],
+      cryptoOperations: [
+        {
+          name: 'sig',
+          method: 'sign',
+          data: hash,
+          dataEncoding: 'hex',
+          key: 'identity', // default value
+          algorithm: 'bitcoin-signed-message' // default value
+        },
+        {
+          name: 'pubkey',
+          method: 'public-key',
+          key: 'identity' // default value
+        },
+        {
+          name: 'paymail',
+          method: 'paymail'
+        }
+      ],
+      onLoad: function() {
+        console.log("Load")
+        setTimeout(function() {
+          document.querySelector(".lds-ring").classList.add("hidden");
+        }, 1000)
+      },
+      onPayment: (payment) => {
+        let cryptoOperations = payment.cryptoOperations
+        console.log(`User signature for their content is ${cryptoOperations[0].value},
+          the public key used is ${cryptoOperations[1].value}
+          the paymail of the user is ${cryptoOperations[2].value},
+          and everything was broadcasted in the tx: ${payment.txid}`)
+        console.log(payment)
+        var current_query = {
+          v: 3,
+          q: {
+            find: { "tx.h": payment.txid },
+            limit: 1
+          }
+        };
+        var b64 = btoa(JSON.stringify(current_query))
+        var current_url = 'https://genesis.bitdb.network/s/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/'+b64
+        var bitsocket = new EventSource(current_url)
+        bitsocket.onmessage = function(ee) {
+          var m = JSON.parse(ee.data)
+          console.log("m = ", m)
+          if (m.type === 'u') {
+            let tx = m.data[0].tx.h
+            location.href = "/me/" + m.data[0].out[0].s8 + "#share"
+          }
+        }
+        setTimeout(() => {
+          location.href = "/me/" + cryptoOperations[2].value + "#share"
+        }, 3000)
+      }
+    })
+  });
+  reader.readAsArrayBuffer(blob)
+}
+document.addEventListener("DOMContentLoaded", function(e) {
+  var fileEl = document.querySelector("#file")
+  fileEl.onchange = function(e) {
+    var type = e.target.files[0].type
+    var name = e.target.files[0].name
+    var file = e.target.files[0]
+    console.log('original file instanceof Blob', file instanceof Blob); // true
+    console.log(`original File size ${file.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+    try {
+      document.querySelector("#done-zone").classList.remove("hidden")
+      document.querySelector("#file-zone").classList.add("hidden")
+      var url = URL.createObjectURL(file);
+      resizer(url, (blob) => {
+        console.log('resized file instanceof Blob', blob instanceof Blob); // true
+        console.log(`resized File size ${blob.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+        convertBlob(blob, 'image/jpeg', (blob) => {
+          document.querySelector("#resizer").classList.add("hidden")
+          document.querySelector("#done-zone").classList.add("hidden")
+          document.querySelector("#button").classList.remove("hidden")
+          renderImage(blob)
+          buildTx(blob)
+        })
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+})
+</script>
+</head>
+<body>
+<header>
+  <a href='/'>
+  <img src='/avatar.png' class='avatar'>
+  <br>
+  bitpic
+  </a>
+  <div class='subtitle'>Your own avatar on bitcoin, forever.</div>
+</header>
+<canvas id='final' class='hidden'></canvas>
+<div id='resizer'></div>
+<div id='btns'>
+  <label class='control' for="file" id='file-zone'>
+    <div>+ Select file</div>
+    <input type="file" accept="image/*" id="file">
+  </label>
+  <label class='control hidden' for="done" id='done-zone'>
+    <div>Done</div>
+    <button id='done'></button>
+  </label>
+  <div id='button' class='hidden'>
+    <div class='small'>Swipe to update your avatar</div>
+    <div id='mb'>
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

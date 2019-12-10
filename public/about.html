@@ -1,0 +1,205 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@_unwriter" />
+<meta name="twitter:title" content="bitpic" />
+<meta name="twitter:description" content="Your own avatar on bitcoin, forever." />
+<meta name="twitter:image" content="https://bitpic.network/bitpicpreview.png" />
+<meta property="og:url" content="https://bitpic.network/about" />
+<meta property="og:type"   content="website" />
+<meta property="og:title" content="bitpic" />
+<meta property="og:description" content="Your own avatar on bitcoin, forever." />
+<meta property="og:image" content="https://bitpic.network/bitpicpreview.png" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,900&display=swap" rel="stylesheet">
+<style>
+body {
+  text-align: center;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  color: rgba(0,0,0,0.7);
+}
+code {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+}
+h1, h2, h3 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  color: rgba(0,0,0,0.7);
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 20px;
+}
+header {
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+header a {
+  text-decoration: none;
+  font-weight: 900;
+  color: rgba(0,0,0,0.8);
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+}
+.small {
+  font-size: 14px;
+  padding: 10px;
+  color: gray;
+}
+.container {
+  font-size: 12px;
+  font-family: Menlo, monaco, Courier;
+}
+.container {
+  max-width: 800px;
+  text-align: left;
+  margin: 0 auto;
+  background: rgba(0,0,0,0.03);
+  padding: 20px;
+}
+img.full {
+  width: 100%;
+}
+pre {
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 10px;
+}
+code {
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 0 2px;
+}
+hr {
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: none;
+  margin: 50px 0;
+  background: none;
+}
+img.avatar {
+  width: 80px;
+  margin-bottom: 10px;
+}
+img.small {
+  height: 50px;
+  padding: 0;
+  display: block;
+  margin: 10px;
+  border: 1px solid silver;
+}
+img.pic {
+  width: 100px;
+  margin: 10px 0;
+  border: 1px solid silver;
+}
+li {
+  margin: 10px 0;
+}
+</style>
+</head>
+<body>
+<header>
+  <a href='/'>
+  <img src='/avatar.png' class='avatar'>
+  <br>
+  bitpic
+  </a>
+  <div class='small'>Your own avatar on bitcoin, forever.</div>
+</header>
+<div class='container'>
+<h2>What is Bitpic?</h2>
+<p>bitpic is a protocol for hosting and using Paymail avatars on the Bitcoin blockchain.</p>
+<p><b>You can think of it as <a href='https://en.gravatar.com/'>Gravatar</a>, but for Bitcoin.</b></p>
+<ul>
+  <li>Instead of using a normal email address, Bitpic uses <a href='https://bsvalias.org/'>Paymail</a> address.</li>
+  <li>Instead of storing the imagess and the image database on a proprietary server, it stores it on the Bitcoin blockchain.</li>
+  <li>Bitpic is open and distributed. Anyone can run a bitpic node. <a href='https://github.com/interplanaria/bitpic'>GitHub</a></li>
+  <li>The images are 100% stored on the Bitcoin blockchain, signed by Paymail user identity public key. Images signed with invalid signature are not indexed.</li>
+</ul>
+<br>
+<h3>Step 1. Upload avatar to Bitcoin</h3>
+<p>Create a Bitcoin transaction which uploads a signed image using the Bitpic protocol.</p>
+<p>
+<pre>
+OP_0
+OP_RETURN
+19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut
+  [FILE Binary]
+  image/jpeg
+  binary
+|
+18pAqbYqhzErT6Zk3a5dwxHtB9icv8jH2p
+  [Paymail]
+  [Pubkey]
+  [Sig]
+</pre>
+</p>
+<br>
+<p>Here's an example:</p>
+<p><a href='https://bitpic.network/query/ewogICJ2IjogMywKICAicSI6IHsKICAgICJmaW5kIjoge30sCiAgICAicHJvamVjdCI6IHsKICAgICAgIm91dC50YXBlLmNlbGwucyI6IDEKICAgIH0sCiAgICAibGltaXQiOiAxMAogIH0KfQ=='>Bitpic Transaction Explorer</a></p>
+<br>
+<p>Here's Bitcom Terminal (Bterm) for bitpic:</p>
+<p><a href='https://bterm.network/#address=18pAqbYqhzErT6Zk3a5dwxHtB9icv8jH2p'>Bterm</a></p>
+<br>
+<h3>Step 2. Use</h3>
+<p>Once uploaded, you can use the image from anywhere, simply by referencing: <code>https://bitpic.network/u/[Paymail]</code><p>
+<p>Here's an example:</p>
+<a href='https://bitpic.network/u/644@moneybutton.com'>
+<code>https://bitpic.network/u/644@moneybutton.com</code>
+<br>
+<img src='https://bitpic.network/u/644@moneybutton.com' class='pic'>
+</a>
+<br>
+<br>
+<h3>Step 3. Update</h3>
+<p>Bitpic is a Planaria node which implements a mutable database and file system.</p>
+<p>This means whenever you upload a new avatar, your bitpic address will be updated to serve the newly uploaded avatar image.</p>
+<hr>
+<h2>How does it work?</h2>
+<p>Bitpic is powered by <a href='https://grid.planaria.network'>Planaria</a>, a Bitcoin crawler which indexes Bitcoin transactions in realtime into a database.
+<br><br>
+<img class='full' src='https://docs.planaria.network/archi.png'>
+<hr>
+<h2>Why use Bitpic?</h2>
+<ol>
+  <li><b>Your avatar forever:</b> Paymail providers and wallet providers may disappear in hundreds of years, but your Bitpic avatar will never go away because it's on the blockchain. If you post something tied to your Paymail, you probably want the avatar to show up forever even after thousands of years. Bitpic allows that, because Bitpic is an infinite state machine powered by <a href='https://grid.planaria.network'>Planaria</a>.</li>
+  <li><b>App developers: No need to roll your own avatar system:</b> As an application developer, you don't need to build a user avatar system from scratch. Just start using the avatar by referencing <code>https://bitpic.network/u/[Paymail]</code>! If an avatar doesn't exist for that paymail address, you will instead see the default image. For example, here's what <code>https://bitpic.network/u/invalid@invalid.com</code> looks like:
+<br>
+  <a href='/u/invalid@invalid.com'>
+  <img src='/u/invalid@invalid.com' class='pic'>
+  </a>
+  </li>
+  <li><b>100% Open:</b> Bitpic is open source and powered by <a href='https://grid.planaria.network'>Planaria</a>, which means anybody can run their own Bitpic Planaria node to operate the avatar system. In fact, you don't even have to use the <code>https://bitpic.network/u/[Paymail]</code> if you run your own Bitpic node!</li>
+  <li><b>Interoperable and Permissionless:</b> If you are an app developer or a wallet company, you only need to worry about implementing Bitpic on your side. You don't need to ask other wallets or applications for permission to use their avatars tied to their paymails, because the avatars are served from the single source of truth: the Bitcoin blockchain.</li>
+</ol>
+<hr>
+<h2>How to use Bitpic</h2>
+<h3>1. For users</h3>
+<p>Once you upload your avatar to the blockchain, you can use it from anywhere. For example you can embed your Bitpic in your website simply with an HTML tag: <code>&lt;img src="https://bitpic.network/u/&lt;YOUR_PAYMAIL&gt;"&gt;</code></p>
+<h3>2. For app developers</h3>
+<p><b>No need to roll your own avatar system:</b> As an app developer, you don't need to roll your own custom avatar system. Bitpic is an avatar owned by the user through Paymail. Outsource your Avatar system to the Bitcoin blockchain.</p>
+<p><b>Uploading Avatars:</b> Allowing your users to upload avatars is also easy. Whenever you need to allow your user to upload avatars, all you need to do is to send them to the <a href='https://bitpic.network/upload'>Bitpic upload interface</a>.</p>
+<p><b>100% Customizable:</b> The Bitpic upload interface is a server-less application made up of static HTML and JavaScript. Which means, if are a wallet provider, or an app developer, and you want your own custom Avatar uploading UI within your app, you can easily do so. Just take a look at the frontend code at <a href='/upload'>Upload page</a>, and build your own version which creates transactions that follow the protocol. Then you can run your own Bitpic planaria node, or simply use the default <code>bitpic.network</code> URL. Just make sure to say "Powered by Bitpic", so people know where they're uploading to.</p>
+<hr>
+<h2>Highlights</h2>
+<h3>1. Powered by Planaria</h3>
+<p>Bitpic is powered by <a href ='https://grid.planaria.network'>Planaria</a>. The Bitpic planaria node creates a mutable database which updates the image tied to a paymail address.</p>
+<h3>2. 100% Open and Portable</h3>
+<p>Anyone can run a Bitpic avatar node because:</p>
+<ol>
+  <li>The avatar files are fully stored on-chain</li>
+  <li>Bitpic is powered by <a href='https://grid.planaria.network'>Planaria</a></li>
+  <li>The Bitpic Planaria node is open source</li>
+  <li>The entire Bitpic frontend is open source</li>
+</ol>
+<hr>
+</div>
+</body>
+</html>

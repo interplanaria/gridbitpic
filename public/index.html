@@ -1,0 +1,242 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@_unwriter" />
+<meta name="twitter:title" content="bitpic" />
+<meta name="twitter:description" content="Your own avatar on bitcoin, forever." />
+<meta name="twitter:image" content="https://bitpic.network/bitpicpreview.png" />
+<meta property="og:url" content="https://bitpic.network" />
+<meta property="og:type"   content="website" />
+<meta property="og:title" content="bitpic" />
+<meta property="og:description" content="Your Avatar, Forever on Bitcoin." />
+<meta property="og:image" content="https://bitpic.network/bitpicpreview.png" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.css" integrity="sha256-/n6IXDwJAYIh7aLVfRBdduQfdrab96XZR+YjG42V398=" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,900&display=swap" rel="stylesheet">
+<style>
+body {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+
+  text-align: center;
+  margin: 0;
+  /*
+  background: #20232a;
+  */
+  /*
+  background: #003B74;
+  */
+  /*
+  background: #35459E;
+  */
+  font-family: 'Roboto', sans-serif;
+}
+code {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+}
+header {
+/*
+  background: rgba(0,0,0,0.9);
+  */
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+header a {
+  text-decoration: none;
+  font-weight: 900;
+  color: rgba(0,0,0,0.8);
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+}
+.btn {
+  background: rgba(0,0,0,0.8);
+  color: white;
+  font-size: 10px;
+  font-weight: 400;
+  padding: 5px 10px;
+  width: 45px;
+  display: inline-block;
+  margin: 10px 0;
+  border-radius: 2px;
+  font-family: Menlo, monaco, Courier;
+}
+.upload {
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  font-family: Menlo, monaco, Courier;
+  padding: 30px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-decoration: none;
+  max-width: 800px;
+  color: gray;
+  border: 1px dashed silver;
+}
+.container {
+  color: rgba(0,0,0,0.8);
+  max-width: 800px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.container h3 {
+  text-align: left;
+  padding: 30px 10px 0;
+  margin: 0;
+}
+.item {
+  text-align: left;
+  align-items: center;
+  display: flex;
+  background: rgba(0,0,0,0.02);
+  text-decoration: none;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+  color: rgba(0,0,0,0.8);
+}
+.item:hover {
+  opacity: 0.7;
+}
+.item a {
+  color: rgba(0,0,0,0.4);
+}
+.card > * {
+  margin: 10px 0;
+}
+.item img {
+  width: 80px;
+  margin-right: 20px;
+}
+.small {
+  font-size: 14px;
+  padding: 10px;
+  color: gray;
+}
+.name {
+  font-weight: 900;
+}
+td {
+  font-size: 13px;
+  min-width: 30px;
+  padding: 0 0 5px 0;
+}
+.url {
+  font-weight: 400;
+  color: rgba(0,0,0,0.4);
+}
+img.avatar {
+  width: 80px;
+  margin-bottom: 10px;
+}
+.confirmed.empty, .unconfirmed.empty {
+  padding: 20px;
+  margin: 10px;
+  background: rgba(0,0,0,0.02);
+}
+.unconfirmed {
+  font-size: 12px;
+  color: gray;
+}
+.footer {
+  margin-top: 50px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 80px;
+  font-size: 12px;
+}
+.footer a {
+  color: rgba(255,255,255,0.7);
+}
+</style>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  var query = {
+    "v": 3,
+    "q": {
+      "find": {},
+      "project": {
+        "out.tape.cell.s": 1, "tx.h": 1
+      },
+      "sort": {
+        "blk.i": -1
+      },
+      "limit": 100
+    }
+  }
+  var b64 = btoa(JSON.stringify(query));
+  var url = document.location.protocol + "//" + document.location.host + "/q/" + b64;
+
+  var header = {
+    headers: { key: "1KJPjd3p8khnWZTkjhDYnywLB2yE1w5BmU" }
+  };
+
+  fetch(url, header).then(function(r) {
+    return r.json()
+  }).then(function(r) {
+    if (r.u && r.u.length > 0) {
+      document.querySelector(".container .unconfirmed").innerHTML = r.u.map((u) => {
+        let username = u.out[0].tape[2].cell[1].s
+        let txid = u.tx.h;
+        return "<a class='item' href='" + document.location.protocol + "//" + document.location.host + "/me/" + username + "'>" +
+          "<img src='" + document.location.protocol + "//" + document.location.host + "/u/" + username + "'>" + 
+          "<div class='card'>" + 
+            "<div class='name'>" + username + "</div>" +
+            "<div class='url'>" + document.location.protocol + "//" + document.location.host + "/u/" + username + "</div>" + 
+          "</div>" + 
+        "</a>"
+      }).join("")
+    } else {
+      document.querySelector(".container .unconfirmed").innerHTML = "empty"
+      document.querySelector(".container .unconfirmed").classList.add("empty")
+    }
+    document.querySelector(".container .confirmed").innerHTML = r.c.map((u) => {
+      let username = u.out[0].tape[2].cell[1].s
+      let txid = u.tx.h;
+      return "<a class='item' href='" + document.location.protocol + "//" + document.location.host + "/me/" + username + "'>" +
+        "<img src='" + document.location.protocol + "//" + document.location.host + "/u/" + username + "'>" + 
+        "<div class='card'>" + 
+          "<div class='name'>" + username + "</div>" +
+          "<div class='url'>" + document.location.protocol + "//" + document.location.host + "/u/" + username + "</div>" + 
+        "</div>" + 
+      "</a>"
+    }).join("")
+  })
+
+})
+</script>
+</head>
+<body>
+<header>
+  <a href='/'>
+  <img src='/avatar.png' class='avatar'>
+  <br>
+  bitpic
+  </a>
+  <div class='small'>Your own avatar on bitcoin, forever.</div>
+  <a class='btn' href='/about'>About</a>
+  <a class='btn' href='/query/ewogICJ2IjogMywKICAicSI6IHsKICAgICJmaW5kIjoge30sCiAgICAicHJvamVjdCI6IHsKICAgICAgIm91dC50YXBlLmNlbGwucyI6IDEsICJ0eC5oIjogMQogICAgfSwKICAgICJsaW1pdCI6IDEwCiAgfQp9'>API</a>
+  <a class='btn' href='https://github.com/interplanaria/bitpic'>GitHub</a>
+  <a class='btn' href='https://twitter.com/_unwriter'>Twitter</a>
+</header>
+<a href='/upload' class='upload'><i class="fas fa-upload"></i> click to upload yourself</a>
+<div class='container'>
+  <h3>Unconfirmed</h3>
+  <div class='unconfirmed'></div>
+  <h3>Confirmed</h3>
+  <div class='confirmed'></div>
+</div>
+<div class='footer'>
+  powered by <a href='https://grid.planaria.network'>grid planaria</a>
+</div>
+</body>
+</html>

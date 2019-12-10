@@ -1,0 +1,322 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="<%=paymail%>'s bitpic" />
+<meta name="twitter:description" content="Your own avatar on bitcoin, forever." />
+<meta name="twitter:image" content="https://bitpic.network/u/<%=paymail%>" />
+<meta property="og:url" content="https://bitpic.network/me/<%=paymail%>" />
+<meta property="og:type"   content="website" />
+<meta property="og:title" content="<%=paymail%>'s bitpic" />
+<meta property="og:description" content="Your Avatar, Forever on Bitcoin." />
+<meta property="og:image" content="https://bitpic.network/u/<%=paymail%>" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.css" integrity="sha256-/n6IXDwJAYIh7aLVfRBdduQfdrab96XZR+YjG42V398=" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,900&display=swap" rel="stylesheet">
+<style>
+body {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+
+  text-align: center;
+  margin: 0;
+  /*
+  background: #20232a;
+  */
+  /*
+  background: #003B74;
+  */
+  /*
+  background: #35459E;
+  */
+  font-family: 'Roboto', sans-serif;
+}
+code {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+}
+header {
+/*
+  background: rgba(0,0,0,0.9);
+  */
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+header a {
+  text-decoration: none;
+  font-weight: 900;
+  color: rgba(0,0,0,0.8);
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+}
+.btn {
+  background: rgba(0,0,0,0.8);
+  color: white;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 5px 10px;
+  width: 70px;
+  display: inline-block;
+  margin: 10px 0;
+  border-radius: 2px;
+  font-family: Menlo, monaco, Courier;
+}
+.upload {
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  font-family: Menlo, monaco, Courier;
+  padding: 30px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-decoration: none;
+  max-width: 800px;
+  color: gray;
+  border: 1px dashed silver;
+}
+.container {
+  color: rgba(0,0,0,0.8);
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.container h3 {
+  text-align: left;
+  padding: 30px 10px 0;
+  margin: 0;
+}
+.item {
+  text-align: left;
+  align-items: center;
+  display: flex;
+  background: rgba(0,0,0,0.02);
+  text-decoration: none;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+  color: rgba(0,0,0,0.8);
+}
+.item a {
+  color: rgba(0,0,0,0.4);
+}
+.card > * {
+  margin: 10px 0;
+}
+.item img {
+  width: 100px;
+  margin-right: 20px;
+}
+.small {
+  font-size: 14px;
+  padding: 10px;
+  color: gray;
+}
+.name {
+  font-weight: 900;
+}
+td {
+  font-size: 13px;
+  min-width: 30px;
+  padding: 0 0 5px 0;
+}
+.url {
+  font-weight: 400;
+  color: rgba(0,0,0,0.4);
+}
+img.avatar {
+  width: 80px;
+  margin-bottom: 10px;
+}
+.container > * {
+  display: block;
+  width: 100%;
+}
+.paymail {
+  background: rgba(0,0,0,0.8);
+  font-size: 12px;
+  padding: 5px;
+  color: rgba(255,255,255,0.9);
+  text-align: left;
+  display: block;
+  border: none;
+  outline: none;
+  flex-grow: 1;
+}
+.line label {
+  padding: 0 5px;
+  font-size: 12px;
+  color: gold;
+}
+.line {
+  background: rgba(0,0,0,0.8);
+  align-items: center;
+  display: flex;
+  margin: 10px 0 0 0;
+  box-sizing: border-box;
+  padding: 10px 12px 0;
+}
+.copy {
+  color: black;
+  margin: 0;
+  border-radius: 0;
+  border: 1px solid gold;
+  background: gold;
+}
+#txid {
+  color: rgba(0,0,0,0.4);
+  font-size: 12px;
+  text-align: right;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  padding: 0 5px;
+  box-sizing: border-box;
+}
+#share {
+  background: gold;
+  text-align: left;
+  margin-bottom: 50px;
+}
+#share .subtitle {
+  font-size: 12px;
+  padding: 10px;
+}
+#share h2 {
+  margin: 0;
+  padding: 10px 10px 0;
+}
+#share .field {
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#share .field textarea { 
+  flex-grow: 1;
+  font-size: 14px;
+  padding: 10px;
+  outline: none;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  height: 100px;
+}
+#share .field button {
+  margin: 0 !important;
+  display: block;
+  border: none !important;
+}
+.hidden {
+  display: none !important;
+}
+.container img {
+  border: 12px solid rgba(0,0,0,0.8);
+  box-sizing: border-box;
+}
+</style>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+<script src="https://unpkg.com/popper.js@1"></script>
+<script src="https://unpkg.com/tippy.js@5"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/3.4.1/themes/google.css" integrity="sha256-9mJWDU9w0AFNC+rL6qT40FuwFllwPmAHae2J4iIyzgc=" crossorigin="anonymous" />
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector(".paymail").value = document.location.protocol + "//" + document.location.host + "/u/<%=paymail%>"
+  var clipboard = new ClipboardJS('.copy');
+  tippy('#copy', {
+    trigger: 'click',
+    content: "Copied to clipboard!"
+  });
+
+  var query = {
+    "v": 3,
+    "q": {
+      "find": {
+        "$and": [{
+          "out.tape.cell.s": "<%=paymail%>"
+        }, {
+          "out.tape.cell.s": "18pAqbYqhzErT6Zk3a5dwxHtB9icv8jH2p"
+        }]
+      },
+      "project": {
+        "tx.h": 1
+      },
+      "limit": 10
+    }
+  }
+  console.log("query = ", query)
+  var b64 = btoa(JSON.stringify(query));
+  var url = document.location.protocol + "//" + document.location.host + "/q/" + b64;
+
+  var header = {
+    headers: { key: "1KJPjd3p8khnWZTkjhDYnywLB2yE1w5BmU" }
+  };
+
+  fetch(url, header).then(function(r) {
+    return r.json()
+  }).then(function(r) {
+    console.log('r', r)
+    let items = [].concat(r.u ? r.u : []).concat(r.c ? r.c : []);
+    let txids = items.map((t) => {
+      return t.tx.h
+    })
+    if (txids.length > 0) {
+      let txid = txids[0];
+      document.querySelector("#txid").innerHTML = "view transaction"
+      document.querySelector("#txid").setAttribute("href", "https://whatsonchain.com/tx/" + txid);
+    }
+  })
+  if (document.location.hash) {
+    let h = document.location.hash.slice(1)
+    if (h === 'share') {
+      let text = "Here's my universal avatar hosted on Bitcoin! " + document.location.protocol + "//" + document.location.host + "/me/<%=paymail%>"
+      document.querySelector("#share").classList.remove("hidden")
+      document.querySelector("#share textarea").value = text;
+      document.querySelector("#share .action").addEventListener("click", (e) => {
+        let t = encodeURI(document.querySelector("#share textarea").value)
+        window.open("https://twitter.com/intent/tweet?text=" + t)
+      })
+    }
+  }
+
+})
+</script>
+</head>
+<body>
+<header>
+  <a href='/'>
+  <img src='/avatar.png' class='avatar'>
+  <br>
+  bitpic
+  </a>
+  <div class='small'>Your own avatar on bitcoin, forever.</div>
+  <a class='btn' href='/about'>How to Use</a>
+</header>
+<div class='container'>
+  <div id='share' class='hidden'>
+    <h2>Success!</h2>
+    <div class='subtitle'>Share your bitpic with your friends</div>
+    <div class='field'>
+      <textarea></textarea>
+      <button class='action btn'>
+        Share
+      </button>
+    </div>
+  </div>
+  <a id='txid' target="_blank"></a>
+  <div class='line'>
+    <label>Image URL:</label>
+    <input id='paymail' class='paymail' type='text'>
+    <button id='copy' class='copy btn' data-clipboard-target="#paymail">
+      copy
+    </button>
+  </div>
+  <img src='/u/<%=paymail%>'>
+</div>
+</body>
+</html>
