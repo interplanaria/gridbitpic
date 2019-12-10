@@ -2,7 +2,7 @@
 
 > Your own avatar on bitcoin, forever.
 
-![bitpic](avatar.png)
+![bitpic](public/avatar.png)
 
 bitpic is a protocol for hosting and using Paymail avatars on the Bitcoin blockchain.
 
