@@ -94,6 +94,17 @@ code {
   background: rgba(0,0,0,0.05);
   */
 }
+.btn {
+  background: rgba(0,0,0,0.8);
+  color: white;
+  font-size: 10px;
+  font-weight: 400;
+  padding: 5px 10px;
+  display: inline-block;
+  margin: 10px 0;
+  border-radius: 2px;
+  font-family: Menlo, monaco, Courier;
+}
 header {
 /*
   background: rgba(0,0,0,0.9);
@@ -166,6 +177,9 @@ header a {
 img.avatar {
   width: 80px;
   margin-bottom: 10px;
+}
+img.current {
+  border: 1px solid rgba(0,0,0,0.1);
 }
 </style>
 <script type="text/javascript" src="https://unpkg.com/bsv@1.0.0/bsv.min.js"></script>
@@ -375,6 +389,7 @@ var buildTx = (blob) => {
 document.addEventListener("DOMContentLoaded", function(e) {
   var fileEl = document.querySelector("#file")
   fileEl.onchange = function(e) {
+    document.querySelector("img.current").classList.add("hidden")
     var type = e.target.files[0].type
     var name = e.target.files[0].name
     var file = e.target.files[0]
@@ -399,6 +414,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
       console.log(error);
     }
   }
+  if (document.location.hash.length > 1) {
+    let h = document.location.hash.slice(1)
+    document.querySelector("img.current").setAttribute("src", "/u/" + h)
+  }
 })
 </script>
 </head>
@@ -410,7 +429,9 @@ document.addEventListener("DOMContentLoaded", function(e) {
   bitpic
   </a>
   <div class='subtitle'>Your own avatar on bitcoin, forever.</div>
+  <a class='btn' href='/about'>How it works</a>
 </header>
+<img class='current'>
 <canvas id='final' class='hidden'></canvas>
 <div id='resizer'></div>
 <div id='btns'>
