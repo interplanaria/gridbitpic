@@ -1,5 +1,5 @@
 {
-  "name": "facechain",
+  "name": "gridbitpic",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "dependencies": {
     "bitpic": "0.0.2",
     "bitquery": "^0.3.138",
+    "cors": "^2.8.5",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "gridplanaria": "0.1.9",

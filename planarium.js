@@ -3,6 +3,7 @@ const bitquery = require('bitquery')
 const express = require('express')
 const fs = require('fs')
 const ejs = require('ejs')
+const cors = require('cors')
 const id = "bitpic"
 var template;
 fs.readFile("public/show.ejs", "utf-8", (err, str) => {
@@ -30,6 +31,7 @@ planarium.start({
   custom: function (e) {
     e.app.use(express.static('public'))
     e.app.set('view engine', 'ejs');
+    e.app.use(cors())
     e.app.get('/', (req, res) => {
       res.sendFile(process.cwd() + "/public/index.html")
     })
