@@ -218,6 +218,16 @@ img.avatar {
   border: 12px solid rgba(0,0,0,0.8);
   box-sizing: border-box;
 }
+.info {
+  display: flex;
+}
+.info a {
+  font-size: 12px;
+  color: rgba(0,0,0,0.4);
+}
+.flexible {
+  flex-grow: 1;
+}
 </style>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
@@ -308,7 +318,11 @@ document.addEventListener("DOMContentLoaded", () => {
       </button>
     </div>
   </div>
-  <a id='txid' target="_blank"></a>
+  <div class='info'>
+    <a href='/upload#<%=paymail%>'><i class='fa fa-edit'></i> update</a>
+    <div class='flexible'></div>
+    <a id='txid' target="_blank"></a>
+  </div>
   <div class='line'>
     <label>Image URL:</label>
     <input id='paymail' class='paymail' type='text'>

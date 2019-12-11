@@ -40,6 +40,7 @@ planarium.start({
       res.sendFile(process.cwd() + "/public/upload.html")
     })
     e.app.get('/me/:paymail', (req, res) => {
+      // user avatar landing page
       res.set('Content-Type', 'text/html');
       console.log(req.url)
       let url = req.originalUrl
@@ -49,6 +50,7 @@ planarium.start({
       res.send(Buffer.from(r))
     })
     e.app.get('/u/:paymail', (req, res) => {
+      // avatar serve
       res.setHeader("Content-Type","image/jpeg");
       let filename = process.cwd() + "/files/" + req.params.paymail
       fs.access(filename, (err) => {
@@ -61,7 +63,17 @@ planarium.start({
         });
         filestream.pipe(res);
       })
-
+    })
+    e.app.get('/exists/:paymail', (req, res) => {
+      // 'exists'
+      let filename = process.cwd() + "/files/" + req.params.paymail
+      fs.access(filename, (err) => {
+        if (err) {
+          res.send("0")
+        } else {
+          res.send("1")
+        }
+      })
     })
   },
 })
