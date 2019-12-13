@@ -205,6 +205,13 @@ OP_RETURN
   <li><code>/u/&lt;paymail&gt;</code> the image url you can embed in your apps. Example: <a href='https://bitpic.network/u/644@moneybutton.com'>https://bitpic.network/u/644@moneybutton.com</a></li>
   <li><code>/exists/&lt;paymail&gt;</code> returns "1" if the paymail has an associated bitpic avatar. returns "0" if it doesn't exist yet.. Example: <a href='https://bitpic.network/exists/644@moneybutton.com'>https://bitpic.network/exists/644@moneybutton.com</a></li>
 </ol>
+<hr>
+<h2 id='default'>Default Image</h2>
+<p>By default Bitpic returns a fixed default image if an image doesn't yet exist for the corresponding paymail address. Here's what it looks like:</p>
+<img src='https://bitpic.network/u/fake@fake.com' class='pic'>
+<p>However it is possible to specify your own default image when the image doesn't load. You can do this by adding a <code>d=&lt;default image url&gt;</code> parameter at the end. Here's an example:</p>
+<p><code>https://bitpic.network/u/fake@fake.com?d=https://thumbs.gfycat.com/ExhaustedSaneAngwantibo-small.gif</code></p>
+<p><img src='https://bitpic.network/u/fake@fake.com?d=https://thumbs.gfycat.com/ExhaustedSaneAngwantibo-small.gif' class='pic'></p>
 </div>
 </body>
 </html>
