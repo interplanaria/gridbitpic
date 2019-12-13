@@ -57,7 +57,12 @@ planarium.start({
       let filename = process.cwd() + "/files/" + req.params.paymail
       fs.access(filename, (err) => {
         if (err) {
-          filename = process.cwd() + "/public/unknown.png"
+          if (req.query.d) {
+            res.redirect(req.query.d)
+            return;
+          } else {
+            filename = process.cwd() + "/public/unknown.png"
+          }
         }
         let filestream = fs.createReadStream(filename)
         filestream.on("error", function(e) {

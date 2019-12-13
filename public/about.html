@@ -19,7 +19,7 @@ body {
   font-family: 'Roboto', sans-serif;
   color: rgba(0,0,0,0.7);
 }
-code {
+code, a {
   overflow-wrap: break-word;
   word-wrap: break-word;
   -ms-word-break: break-all;
@@ -200,6 +200,11 @@ OP_RETURN
   <li>The entire Bitpic frontend is open source</li>
 </ol>
 <hr>
+<h2>Endpoints</h2>
+<ol>
+  <li><code>/u/&lt;paymail&gt;</code> the image url you can embed in your apps. Example: <a href='https://bitpic.network/u/644@moneybutton.com'>https://bitpic.network/u/644@moneybutton.com</a></li>
+  <li><code>/exists/&lt;paymail&gt;</code> returns "1" if the paymail has an associated bitpic avatar. returns "0" if it doesn't exist yet.. Example: <a href='https://bitpic.network/exists/644@moneybutton.com'>https://bitpic.network/exists/644@moneybutton.com</a></li>
+</ol>
 </div>
 </body>
 </html>
