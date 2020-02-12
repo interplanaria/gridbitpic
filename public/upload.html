@@ -317,7 +317,7 @@ var readBlob = (blob, cb) => {
   reader.readAsArrayBuffer(blob)
 }
 
-var listenForTx = (txid) => {
+var listenForTx = (txid, paymail) => {
   var current_query = {
     v: 3,
     q: {
@@ -337,7 +337,7 @@ var listenForTx = (txid) => {
     }
   }
   setTimeout(() => {
-    location.href = "/me/" + cryptoOperations[2].value + "#share"
+    location.href = "/me/" + paymail + "#share"
   }, 3000)
 }
 var buildRelayTx = (blob) => {
@@ -369,7 +369,7 @@ readBlob(blob, (file) => {
     },
     onPayment: (payment) => {
       console.log(payment)
-      listenForTx(payment.txid)
+      listenForTx(payment.txid, payment.paymail)
     }
   })
 })
@@ -440,7 +440,7 @@ readBlob(blob, (file) => {
           the paymail of the user is ${cryptoOperations[2].value},
           and everything was broadcasted in the tx: ${payment.txid}`)
           console.log(payment)
-          listenForTx(payment.txid)
+          listenForTx(payment.txid, cryptoOperations[2].value)
       }
     })
 });
