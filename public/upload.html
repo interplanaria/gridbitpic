@@ -104,6 +104,7 @@ code {
   margin: 10px 0;
   border-radius: 2px;
   font-family: Menlo, monaco, Courier;
+  cursor: pointer;
 }
 header {
 /*
@@ -181,9 +182,16 @@ img.avatar {
 img.current {
   border: 1px solid rgba(0,0,0,0.1);
 }
+.relay iframe {
+  margin-top: -3px;
+}
+.relay .lds-ring div {
+  margin: 0 2px;
+}
 </style>
 <script type="text/javascript" src="https://unpkg.com/bsv@1.0.0/bsv.min.js"></script>
 <script src="https://www.moneybutton.com/moneybutton.js"></script>
+<script src="https://one.relayx.io/relayone.js"></script>
 <script src='https://unpkg.com/datapay'></script>
 <script src='https://unpkg.com/databutton'></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
@@ -291,12 +299,80 @@ var renderImage = (blob) => {
   };
   img.src = window.URL.createObjectURL(blob);
 }
-var buildTx = (blob) => {
+var pickProvider = (cb) => {
+  const p = document.querySelector("#provider-picker")
+  p.classList.remove("hidden")
+  document.querySelector("#pick-moneybutton").addEventListener("click", () => {p.classList.add("hidden"); cb("moneybutton")})
+  document.querySelector("#pick-relay").addEventListener("click", () => {p.classList.add("hidden"); cb("relay")})
+}
+var readBlob = (blob, cb) => {
   var reader = new FileReader();
   reader.addEventListener('load', function(event) {
     var file = event.target.result
     file = buffer.Buffer.from(file)
+    cb(file)
+  })
+  reader.readAsArrayBuffer(blob)
+}
+var listenForTx = (txid, paymail) => {
+  var current_query = {
+    v: 3,
+    q: {
+      find: { "tx.h": txid },
+      limit: 1
+    }
+  };
+  var b64 = btoa(JSON.stringify(current_query))
+  var current_url = 'https://genesis.bitdb.network/s/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/'+b64
+  var bitsocket = new EventSource(current_url)
+  bitsocket.onmessage = function(ee) {
+    var m = JSON.parse(ee.data)
+    console.log("m = ", m)
+    if (m.type === 'u') {
+      let tx = m.data[0].tx.h
+      location.href = "/me/" + m.data[0].out[0].s8 + "#share"
+    }
+  }
+  setTimeout(() => {
+    location.href = "/me/" + paymail + "#share"
+  }, 3000)
+}
+var buildRelayTx = (blob) => {
+  readBlob(blob, (file) => {
+    // parrot mb styling
+    document.querySelector('#mb').style = "position: relative;display: inline-block;width: 140px;height: 34px;"
+    document.querySelector('#mb').classList.add('relay')
 
+    let s = bsv.Script.buildSafeDataOut([
+      "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut", // B://
+      file,
+      "image/jpeg",
+      "binary"
+    ])
+
+    relayone.render(document.querySelector("#mb"), {
+      label: 'sign',
+      outputs: [{
+        amount: '0',
+        currency: 'BSV',
+        script: s.toASM(),
+        signatures: ['BITPIC']
+      }],
+      onLoad: function() {
+        console.log("Load")
+        setTimeout(function() {
+          document.querySelector(".lds-ring").classList.add("hidden");
+        }, 1000)
+      },
+      onPayment: (payment) => {
+        console.log(payment)
+        listenForTx(payment.txid, payment.paymail)
+      }
+    })
+  })
+}
+var buildMoneyButtonTx = (blob) => {
+  readBlob(blob, (file) => {
     let hex = Array.prototype.map.call(file, x => ('00' + x.toString(16)).slice(-2)).join('');
 
     let hash = bsv.crypto.Hash.sha256(buffer.Buffer.from(hex, 'hex')).toString('hex')
@@ -359,32 +435,11 @@ var buildTx = (blob) => {
           the public key used is ${cryptoOperations[1].value}
           the paymail of the user is ${cryptoOperations[2].value},
           and everything was broadcasted in the tx: ${payment.txid}`)
-        console.log(payment)
-        var current_query = {
-          v: 3,
-          q: {
-            find: { "tx.h": payment.txid },
-            limit: 1
-          }
-        };
-        var b64 = btoa(JSON.stringify(current_query))
-        var current_url = 'https://genesis.bitdb.network/s/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/'+b64
-        var bitsocket = new EventSource(current_url)
-        bitsocket.onmessage = function(ee) {
-          var m = JSON.parse(ee.data)
-          console.log("m = ", m)
-          if (m.type === 'u') {
-            let tx = m.data[0].tx.h
-            location.href = "/me/" + m.data[0].out[0].s8 + "#share"
-          }
-        }
-        setTimeout(() => {
-          location.href = "/me/" + cryptoOperations[2].value + "#share"
-        }, 3000)
+          console.log(payment)
+          listenForTx(payment.txid, cryptoOperations[2].value)
       }
     })
   });
-  reader.readAsArrayBuffer(blob)
 }
 document.addEventListener("DOMContentLoaded", function(e) {
   var fileEl = document.querySelector("#file")
@@ -405,9 +460,17 @@ document.addEventListener("DOMContentLoaded", function(e) {
         convertBlob(blob, 'image/jpeg', (blob) => {
           document.querySelector("#resizer").classList.add("hidden")
           document.querySelector("#done-zone").classList.add("hidden")
-          document.querySelector("#button").classList.remove("hidden")
           renderImage(blob)
-          buildTx(blob)
+          pickProvider((provider) => {
+            if (provider === 'moneybutton') {
+              document.querySelector("#button").classList.remove("hidden")
+              buildMoneyButtonTx(blob)
+            }
+            if (provider === 'relay') {
+              document.querySelector("#button").classList.remove("hidden")
+              buildRelayTx(blob)
+            }
+          })
         })
       })
     } catch (error) {
@@ -434,6 +497,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
 <img class='current'>
 <canvas id='final' class='hidden'></canvas>
 <div id='resizer'></div>
+<div id="provider-picker" class="hidden">
+  <a class="btn" id='pick-moneybutton'>Money Button</a>
+  <a class="btn" id='pick-relay'>RelayX</a>
+</div>
 <div id='btns'>
   <label class='control' for="file" id='file-zone'>
     <div>+ Select file</div>
