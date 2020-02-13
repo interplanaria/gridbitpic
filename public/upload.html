@@ -299,14 +299,12 @@ var renderImage = (blob) => {
   };
   img.src = window.URL.createObjectURL(blob);
 }
-
-function pickProvider(cb) {
+var pickProvider = (cb) => {
   const p = document.querySelector("#provider-picker")
   p.classList.remove("hidden")
   document.querySelector("#pick-moneybutton").addEventListener("click", () => {p.classList.add("hidden"); cb("moneybutton")})
   document.querySelector("#pick-relay").addEventListener("click", () => {p.classList.add("hidden"); cb("relay")})
 }
-
 var readBlob = (blob, cb) => {
   var reader = new FileReader();
   reader.addEventListener('load', function(event) {
@@ -316,7 +314,6 @@ var readBlob = (blob, cb) => {
   })
   reader.readAsArrayBuffer(blob)
 }
-
 var listenForTx = (txid, paymail) => {
   var current_query = {
     v: 3,
@@ -341,42 +338,41 @@ var listenForTx = (txid, paymail) => {
   }, 3000)
 }
 var buildRelayTx = (blob) => {
-readBlob(blob, (file) => {
-  // parrot mb styling
-  document.querySelector('#mb').style = "position: relative;display: inline-block;width: 140px;height: 34px;"
-  document.querySelector('#mb').classList.add('relay')
+  readBlob(blob, (file) => {
+    // parrot mb styling
+    document.querySelector('#mb').style = "position: relative;display: inline-block;width: 140px;height: 34px;"
+    document.querySelector('#mb').classList.add('relay')
 
-  let s = bsv.Script.buildSafeDataOut([
-    "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut", // B://
-    file,
-    "image/jpeg",
-    "binary"
-  ])
+    let s = bsv.Script.buildSafeDataOut([
+      "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut", // B://
+      file,
+      "image/jpeg",
+      "binary"
+    ])
 
-  relayone.render(document.querySelector("#mb"), {
-    label: 'sign',
-    outputs: [{
-      amount: '0',
-      currency: 'BSV',
-      script: s.toASM(),
-      signatures: ['BITPIC']
-    }],
-    onLoad: function() {
-      console.log("Load")
-      setTimeout(function() {
-        document.querySelector(".lds-ring").classList.add("hidden");
-      }, 1000)
-    },
-    onPayment: (payment) => {
-      console.log(payment)
-      listenForTx(payment.txid, payment.paymail)
-    }
+    relayone.render(document.querySelector("#mb"), {
+      label: 'sign',
+      outputs: [{
+        amount: '0',
+        currency: 'BSV',
+        script: s.toASM(),
+        signatures: ['BITPIC']
+      }],
+      onLoad: function() {
+        console.log("Load")
+        setTimeout(function() {
+          document.querySelector(".lds-ring").classList.add("hidden");
+        }, 1000)
+      },
+      onPayment: (payment) => {
+        console.log(payment)
+        listenForTx(payment.txid, payment.paymail)
+      }
+    })
   })
-})
 }
-
 var buildMoneyButtonTx = (blob) => {
-readBlob(blob, (file) => {
+  readBlob(blob, (file) => {
     let hex = Array.prototype.map.call(file, x => ('00' + x.toString(16)).slice(-2)).join('');
 
     let hash = bsv.crypto.Hash.sha256(buffer.Buffer.from(hex, 'hex')).toString('hex')
@@ -443,7 +439,7 @@ readBlob(blob, (file) => {
           listenForTx(payment.txid, cryptoOperations[2].value)
       }
     })
-});
+  });
 }
 document.addEventListener("DOMContentLoaded", function(e) {
   var fileEl = document.querySelector("#file")
