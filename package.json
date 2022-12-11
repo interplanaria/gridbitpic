@@ -13,7 +13,7 @@
     "bitquery": "^0.3.138",
     "cors": "^2.8.5",
     "ejs": "^3.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "gridplanaria": "0.1.9",
     "mingo": "^2.4.0",
     "neonplanaria": "0.0.41"
